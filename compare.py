@@ -2,8 +2,8 @@ from sentence_transformers import SentenceTransformer, util
 from bs4 import BeautifulSoup
 
 # Initialize the Sentence-BERT model
-# model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
-model = SentenceTransformer('all-mpnet-base-v2', 'cuda')
+# model = SentenceTransformer('all-mpnet-base-v2')
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2', 'cuda')
 
 # Sample multi-paragraph emails
 email1 = """<!DOCTYPE html><html><head></head><body><div class="x_elementToProof"><strong><u data-olk-copy-source="MessageBody">Job Description:</u></strong></div><div class="x_elementToProof">Under general supervision, designs, codes, tests, modifies and debugs computer software.</div><div class="x_elementToProof">looking for an Atlassian administrator to configure, manage, and enhance Jira and Confluence, including native functionality as well as researching, testing, and implementing plugins. The Atlassian administrator will be responsible for understanding the current process, gathering requirements, investigating potential solutions, analyzing impact, communicating with stakeholders, and implementing solutions.</div><div class="x_elementToProof">This role provides challenging opportunities and ample room for critical thinking in building extensible solutions that meet the unique needs of our clients while scaling out to support the daily collaboration of the entire organization. The position will be based out of Atlanta, Georgia. We are open to fully remote candidates as long as they reside in the US.</div></strong> </div><div class="x_elementToProof"><strong><u>Primary Responsibilities</u></strong></div><div>o Collaborate with customers, other Business Analysts, and cross-functional teams to collect requirements and develop solutions to support the            daily needs of a rapidly growing business.</div><div class="x_elementToProof">o Research, test, and implement plugins for Jira, Confluence, and Bitbucket.</div><div>o Develop interfaces between external tooling and Jira/Confluence infrastructure.</div><div>o Manage complex Jira workflows, screen schemes, permission schemes, and notification schemes.</div><div>o Document requirements, solutions, as well as user and support reference guides.</div><div>o Develop specifications and test plans associated with new features or modifications.</div><div>o Confer with and provide support to technical group.</div><div>o Provide communications link between user and technical group.</div><div>o Provide ongoing user support including troubleshooting and resolution of issues.</div><div class="x_elementToProof">o Perform other related duties as assigned.</div><div class="x_elementToProof"><strong><u>Minimum Requirements</u></strong></div><div>o Experience in setting up and supporting Atlassian Tools (Jira, Confluence, etc.).</div><div>o Basic SQL and JQL query experience.</div><div>o Experience customizing workflows, setting up dashboards, and generating reports.</div><div>o Basic knowledge and understanding of the software development cycle.</div><div>o Excellent problem solving skills and demonstration of critical thinking.</div><div class="x_elementToProof">o Strong written and verbal communication skills.</div><div class="x_elementToProof"><strong><u>Preferred Skills</u></strong></div><div>o Ability to automate and extend base Jira/Confluence functionality, including scripting.</div><div>o Design and develop customizations and plugins.</div><div>o Experience developing custom plugins using Java for Jira 9.x and Confluence 9.x.</div><div>o Experience using/extending REST API using Java for Jira and Confluence.</div><div>o Knowledge of Single Sign On protocols such as SAML, SAML2.</div><div class="x_elementToProof">o Familiarity with Git and branching models or other source control repositories.</div><div><strong>Length of Contract</strong></div><div>6 months with potential to extend</div><div class="x_elementToProof"><strong><u>Skills:</u></strong></div><div><div><div class="R1UVb"><div class="qF8_5"></div><table cellspacing="0" cellpadding="0"><tbody><tr><td><div><div><strong><u>Skill</u></strong></div></div></td><td><div><div><strong><u>Required / Desired</u></strong></div></div></td><td><div><div><strong><u>Amount</u></strong></div></div></td><td><div><div><strong><u>of Experience</u></strong></div></div></td></tr></tbody></table></div></div></div><div><div class="R1UVb"><div class="qF8_5"></div><table cellspacing="0" cellpadding="0"><tbody><tr><td><div><strong><u>Proven Atlassian administration experience configuring, managing, and enhancing Jira and Confluence.</u></strong></div></td><td><div><strong><u>Required</u></strong></div></td><td><div><strong><u>3</u></strong></div></td><td><div><strong><u>Years</u></strong></div></td></tr></tbody></table></div></div><div><div class="R1UVb"><div class="qF8_5"></div><table cellspacing="0" cellpadding="0"><tbody><tr><td><div><strong><u>Experience in setting up and supporting Atlassian Tools (Jira, Confluence, etc.).</u></strong></div></td><td><div><strong><u>Required</u></strong></div></td><td><div><strong><u>3</u></strong></div></td><td><div><strong><u>Years</u></strong></div></td></tr></tbody></table></div></div><div><div class="R1UVb"><div class="qF8_5"></div><table id="x_table_0" cellspacing="0" cellpadding="0"><tbody><tr><td><div><strong><u>Basic SQL and JQL query experience.</u></strong></div></td><td><div><strong><u>Required</u></strong></div></td><td><div><strong><u>3</u></strong></div></td><td><div><strong><u>Years</u></strong></div></td></tr></tbody></table></div></div><div><div class="R1UVb"><div class="qF8_5"></div><table cellspacing="0" cellpadding="0"><tbody><tr><td><div><strong><u>Experience customizing workflows, setting up dashboards, and generating reports.</u></strong></div></td><td><div><strong><u>Required</u></strong></div></td><td><div><strong><u>3</u></strong></div></td><td><div><strong><u>Years</u></strong></div></td></tr></tbody></table></div></div></body></html>"""
@@ -40,20 +40,17 @@ embedding2 = get_embedding_for_long_text(email2)
 embedding3 = get_embedding_for_long_text(email3)
 embedding4 = get_embedding_for_long_text(email4)
 
-# Ensure that both embeddings were computed successfully
-if embedding1 is not None and embedding2 is not None and embedding3 is not None:
-    # Calculate cosine similarity between the two embeddings
-    similarity_score = util.pytorch_cos_sim(embedding1, embedding2).item()
-    print(f"Similarity Score 1 vs 2: {similarity_score}")
-    similarity_score = util.pytorch_cos_sim(embedding1, embedding3).item()
-    print(f"Similarity Score 1 vs 3: {similarity_score}")
-    similarity_score = util.pytorch_cos_sim(embedding2, embedding3).item()
-    print(f"Similarity Score 1 vs 4: {similarity_score}")
-    similarity_score = util.pytorch_cos_sim(embedding2, embedding4).item()
-    print(f"Similarity Score 2 vs 3: {similarity_score}")
-    similarity_score = util.pytorch_cos_sim(embedding1, embedding4).item()
-    print(f"Similarity Score 2 vs 4: {similarity_score}")
-    similarity_score = util.pytorch_cos_sim(embedding3, embedding4).item()
-    print(f"Similarity Score 3 vs 4: {similarity_score}")
-else:
-    print("One of the embeddings could not be computed.")
+
+# Calculate cosine similarity between the two embeddings
+embeddings = [
+    ('1 vs 2', embedding1, embedding2),
+    ('1 vs 3', embedding1, embedding3),
+    ('1 vs 4', embedding1, embedding4),
+    ('2 vs 3', embedding2, embedding3),
+    ('2 vs 4', embedding2, embedding4),
+    ('3 vs 4', embedding3, embedding4),
+]
+
+for description, emb1, emb2 in embeddings:
+    similarity_score = util.pytorch_cos_sim(emb1, emb2).item()
+    print(f"Similarity Score {description}: {similarity_score}")
