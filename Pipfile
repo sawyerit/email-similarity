@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 sentence-transformers = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
